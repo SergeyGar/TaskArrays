@@ -28,8 +28,8 @@ class InputTest {
   private final FileDataReader reader = new NioFileDataReader();
 
   @ParameterizedTest
-  @ValueSource(strings = {"1, 2, 3", "1 - 2 - 3", "1;2;3", "3 4 7", "",
-      "   ", "-5, 0, -2", "-2147483648 2147483647", "1-2-3", "1,2;3"})
+  @ValueSource(strings = {"1;2;3", " 1 ; 2 ; 3 ", "", "   ", "-5; 0; -2",
+      "-2147483648;2147483647", "42"})
   void acceptsValidLines(String line) {
     // given
     String input = line;
@@ -42,7 +42,9 @@ class InputTest {
   @ParameterizedTest
   @NullSource
   @ValueSource(strings = {"1y1 21 32", "1, 2, x3, 6..5, 77", "11- 2 - 42-",
-      "1,", ";1", "1,,2", "1; ;2", "1.5", "2147483648", "-2147483649", "1-2147483648"})
+      "1,", ";1", "1,,2", "1; ;2", "1.5", "2147483648", "-2147483649", "1-2147483648",
+      "1,2,3", "1 - 2 - 3", "3 4 7", "1-2-3", "1,2;3", "1;", "1;;2",
+      "1;2147483648", "1;-2147483649"})
   void rejectsInvalidLines(String line) {
     // given
     String input = line;
@@ -53,7 +55,7 @@ class InputTest {
   }
 
   @ParameterizedTest
-  @ValueSource(strings = {"1, 2, 3", "1 - 2 - 3", "1;2;3", "1 2 3", "1-2-3"})
+  @ValueSource(strings = {"1;2;3", "1; 2; 3", " 1 ; 2 ; 3 "})
   void parsesDelimiters(String line) {
     // given
     String input = line;
@@ -66,7 +68,7 @@ class InputTest {
   @Test
   void parsesSignedValues() {
     // given
-    String input = "-5, 0, -2";
+    String input = "-5; 0; -2";
     // when
     int[] result = parser.parse(input);
     // then

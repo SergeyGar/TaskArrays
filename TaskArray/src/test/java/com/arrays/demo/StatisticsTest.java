@@ -4,9 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.arrays.demo.entity.IntegerArrayEntity;
-import com.arrays.demo.service.impl.AverageServiceImpl;
-import com.arrays.demo.service.impl.MinMaxServiceImpl;
-import com.arrays.demo.service.impl.SumServiceImpl;
+import com.arrays.demo.service.CalculationService;
+import com.arrays.demo.service.impl.CalculationServiceImpl;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
 import java.util.OptionalLong;
@@ -19,16 +18,15 @@ class StatisticsTest {
   private static final IntegerArrayEntity EMPTY = new IntegerArrayEntity(new int[0]);
   private static final IntegerArrayEntity LARGE =
       new IntegerArrayEntity(new int[] {Integer.MAX_VALUE, Integer.MAX_VALUE});
-  private final MinMaxServiceImpl minMax = new MinMaxServiceImpl();
-  private final SumServiceImpl sum = new SumServiceImpl();
-  private final AverageServiceImpl average = new AverageServiceImpl();
+
+  private final CalculationService calculation = new CalculationServiceImpl();
 
   @Test
   void findsMinimum() {
     // given
     IntegerArrayEntity array = INPUT;
     // when
-    OptionalInt result = minMax.min(array);
+    OptionalInt result = calculation.min(array);
     // then
     assertEquals(OptionalInt.of(-3), result);
   }
@@ -38,7 +36,7 @@ class StatisticsTest {
     // given
     IntegerArrayEntity array = INPUT;
     // when
-    OptionalInt result = minMax.max(array);
+    OptionalInt result = calculation.max(array);
     // then
     assertEquals(OptionalInt.of(8), result);
   }
@@ -48,7 +46,7 @@ class StatisticsTest {
     // given
     IntegerArrayEntity array = INPUT;
     // when
-    OptionalLong result = sum.sum(array);
+    OptionalLong result = calculation.sum(array);
     // then
     assertEquals(OptionalLong.of(9), result);
   }
@@ -58,7 +56,7 @@ class StatisticsTest {
     // given
     IntegerArrayEntity array = LARGE;
     // when
-    OptionalLong result = sum.sum(array);
+    OptionalLong result = calculation.sum(array);
     // then
     assertEquals(OptionalLong.of(4294967294L), result);
   }
@@ -68,7 +66,7 @@ class StatisticsTest {
     // given
     IntegerArrayEntity array = INPUT;
     // when
-    OptionalDouble result = average.average(array);
+    OptionalDouble result = calculation.average(array);
     // then
     assertEquals(OptionalDouble.of(2.25), result);
   }
@@ -78,7 +76,7 @@ class StatisticsTest {
     // given
     IntegerArrayEntity array = EMPTY;
     // when
-    OptionalInt result = minMax.min(array);
+    OptionalInt result = calculation.min(array);
     // then
     assertTrue(result.isEmpty());
   }
@@ -88,7 +86,7 @@ class StatisticsTest {
     // given
     IntegerArrayEntity array = EMPTY;
     // when
-    OptionalInt result = minMax.max(array);
+    OptionalInt result = calculation.max(array);
     // then
     assertTrue(result.isEmpty());
   }
@@ -98,7 +96,7 @@ class StatisticsTest {
     // given
     IntegerArrayEntity array = EMPTY;
     // when
-    OptionalLong result = sum.sum(array);
+    OptionalLong result = calculation.sum(array);
     // then
     assertTrue(result.isEmpty());
   }
@@ -108,7 +106,7 @@ class StatisticsTest {
     // given
     IntegerArrayEntity array = EMPTY;
     // when
-    OptionalDouble result = average.average(array);
+    OptionalDouble result = calculation.average(array);
     // then
     assertTrue(result.isEmpty());
   }

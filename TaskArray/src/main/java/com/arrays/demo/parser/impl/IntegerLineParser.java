@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 
 public final class IntegerLineParser implements LineParser {
   private static final String TOKEN_REGEX =
-      "(?:^\\s*|\\s*[,;]\\s*|\\s*-\\s*|\\s+)(-?\\d+)";
+      "(?:^\\s*|;\\s*)(-?\\d+)";
   private static final Pattern TOKEN_PATTERN = Pattern.compile(TOKEN_REGEX);
   private final LineValidator validator;
 
