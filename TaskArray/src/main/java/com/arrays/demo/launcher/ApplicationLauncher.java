@@ -1,6 +1,8 @@
 package com.arrays.demo.launcher;
 
 import com.arrays.demo.entity.IntegerArrayEntity;
+import com.arrays.demo.service.CalculationService;
+import com.arrays.demo.service.impl.CalculationServiceImpl;
 import com.arrays.demo.exception.ArrayProcessingException;
 import com.arrays.demo.factory.ArrayFactory;
 import com.arrays.demo.factory.impl.IntegerArrayFactory;
@@ -8,15 +10,9 @@ import com.arrays.demo.parser.LineParser;
 import com.arrays.demo.parser.impl.IntegerLineParser;
 import com.arrays.demo.reader.FileDataReader;
 import com.arrays.demo.reader.impl.NioFileDataReader;
-import com.arrays.demo.service.AverageService;
-import com.arrays.demo.service.MinMaxService;
 import com.arrays.demo.service.SortService;
-import com.arrays.demo.service.SumService;
-import com.arrays.demo.service.impl.AverageServiceImpl;
 import com.arrays.demo.service.impl.BubbleSortServiceImpl;
 import com.arrays.demo.service.impl.InsertionSortServiceImpl;
-import com.arrays.demo.service.impl.MinMaxServiceImpl;
-import com.arrays.demo.service.impl.SumServiceImpl;
 import com.arrays.demo.validator.LineValidator;
 import com.arrays.demo.validator.impl.IntegerLineValidator;
 import java.nio.file.Path;
@@ -29,13 +25,11 @@ import org.apache.logging.log4j.Logger;
 
 public final class ApplicationLauncher {
   private static final Logger LOGGER = LogManager.getLogger(ApplicationLauncher.class);
+  private final CalculationService calculation = new CalculationServiceImpl();
   private final FileDataReader reader = new NioFileDataReader();
   private final LineValidator validator = new IntegerLineValidator();
   private final LineParser parser = new IntegerLineParser(validator);
   private final ArrayFactory factory = new IntegerArrayFactory();
-  private final MinMaxService minMax = new MinMaxServiceImpl();
-  private final SumService sum = new SumServiceImpl();
-  private final AverageService average = new AverageServiceImpl();
   private final SortService bubbleSort = new BubbleSortServiceImpl();
   private final SortService insertionSort = new InsertionSortServiceImpl();
 
@@ -65,10 +59,10 @@ public final class ApplicationLauncher {
   }
 
   private void report(IntegerArrayEntity array) {
-    OptionalInt minimum = minMax.min(array);
-    OptionalInt maximum = minMax.max(array);
-    OptionalLong total = sum.sum(array);
-    OptionalDouble mean = average.average(array);
+    OptionalInt minimum = calculation.min(array);
+    OptionalInt maximum = calculation.max(array);
+    OptionalLong total = calculation.sum(array);
+    OptionalDouble mean = calculation.average(array);
     LOGGER.info("Array: {}; min: {}; max: {}; sum: {}; average: {}",
         array, minimum, maximum, total, mean);
     IntegerArrayEntity bubbleResult = bubbleSort.sort(array);
